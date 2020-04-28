@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "bulma/css/bulma.css";
-import Navbar from "./Components/Navbar";
+import Navbar from "../Components/Navbar";
 const axios = require("axios");
 
 function Login(props) {
@@ -21,7 +21,7 @@ function Login(props) {
     e.preventDefault();
     fetch("/api/authenticate", {
       method: "POST",
-      body: JSON.stringify({email,password}),
+      body: JSON.stringify({ email, password }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -59,7 +59,7 @@ function Login(props) {
           required
         />
         <br />
-        <br/>
+        <br />
         <input
           class="input is-primary input is-hovered"
           type="password"
@@ -68,8 +68,8 @@ function Login(props) {
           onChange={handleInputChangePassword}
           required
         />
-        <br/>
-        <br/>
+        <br />
+        <br />
         <button class="button" type="submit">
           Login
         </button>

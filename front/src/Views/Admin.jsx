@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "./Components/Navbar"
+import Navbar from "../Components/Navbar";
 const axios = require("axios");
 
 const HomeIsLoggedIn = () => {
@@ -50,42 +50,42 @@ const HomeIsLoggedIn = () => {
 
   return (
     <div>
-    <Navbar />
-    <form onSubmit={handleSubmit}>
-      <p>You are logged in !</p>
-      <br />
-      <input
-        type="button"
-        className="button is-normal is-success is-light"
-        value="Add New Input"
-        onClick={addValue}
-      />
-      {value.length &&
-        value.map((val, idx) => {
-          const inputId = `name-${idx}`;
-          return (
-            <div key={`${idx}`}>
-              <br />
-              <label htmlFor={inputId}>{`Input #${idx + 1}`}</label>
-              <input
-                type="text"
-                name={inputId}
-                data-idx={idx}
-                id={inputId}
-                className="message"
-                value={value[idx]}
-                onChange={handleChange}
-              />
-            </div>
-          );
-        })}
-      <br />
-      <input
-        type="submit"
-        className="button is-primary is-light"
-        value="Submit"
-      />
-    </form>
+      <Navbar />
+      <form onSubmit={handleSubmit}>
+        <p>You are logged in !</p>
+        <br />
+        <input
+          type="button"
+          className="button is-normal is-success is-light"
+          value="Add New Input"
+          onClick={addValue}
+        />
+        {value.length &&
+          value.map((val, idx) => {
+            const inputId = `name-${idx}`;
+            return (
+              <div key={`${idx}`}>
+                <br />
+                <label htmlFor={inputId}>{`Input #${idx + 1}`}</label>
+                <input
+                  type="text"
+                  name={inputId}
+                  data-idx={idx}
+                  id={inputId}
+                  className="message"
+                  value={value[idx]}
+                  onChange={handleChange}
+                />
+              </div>
+            );
+          })}
+        <br />
+        <input
+          type="submit"
+          className="button is-primary is-light"
+          value="Submit"
+        />
+      </form>
     </div>
   );
 };

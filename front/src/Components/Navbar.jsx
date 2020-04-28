@@ -1,26 +1,12 @@
 import React from "react";
 import "bulma/css/bulma.css";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 function Navbar() {
   return (
     <div>
       <nav className="navbar is-transparent">
         <div className="navbar-brand">
-          <a className="navbar-item" href="https://lettria.com/fr">
-            <img
-              src="../logo.png"
-              alt="The logo of Letria"
-              width="112"
-              height="28"
-            />
-          </a>
           <div
             className="navbar-burger burger"
             data-target="navbarExampleTransparentExample"
@@ -37,9 +23,10 @@ function Navbar() {
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="field is-grouped">
-               
-
-                <a className="navbar-item" href="http://localhost:3000/register">
+                <a
+                  className="navbar-item"
+                  href="http://localhost:3000/register"
+                >
                   Register
                 </a>
                 <a className="navbar-item" href="http://localhost:3000">

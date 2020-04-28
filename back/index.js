@@ -8,18 +8,30 @@ const secret = "mysecretsshhh";
 const cookieParser = require("cookie-parser");
 const withAuth = require("./middleware");
 const userRouter = require("./routes/Users.js");
+const Product = require("./models/Product");
+
+/* var fonoapi = require("fonoapi-nodejs");
+fonoapi.token = "d045b6783ccbbaaf96088d427329ebd34c26682c6ee6d65e"; */
+
+// get latest devices from apple (limit result to 5)
+/* fonoapi.getLatest(myCallback, 100, "apple");
+
+function myCallback(queryString, data) {
+  Product.create(data)
+    .then((dbRes) => console.log(dbRes))
+    .catch((dbErr) => console.log(dbErr));
+} */
 
 var corsOptions = {
   origin: "http://localhost:3000",
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  credentials:true,
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 app.use(userRouter);
-
 
 app.get("/", function (req, res) {
   res.sendStatus(200);

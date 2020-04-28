@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Navbar from "./Components/Navbar";
+import Navbar from "../Components/Navbar";
 const axios = require("axios");
 
 function Register() {
@@ -10,7 +10,7 @@ function Register() {
 
   function handleInputChangeEmail(e) {
     let inputEmail = e.target.value;
-    if (inputEmail.length < 0) setWarningEmail("You need to add an email")
+    if (inputEmail.length < 0) setWarningEmail("You need to add an email");
     SetEmail(inputEmail);
   }
 
@@ -70,7 +70,7 @@ function Register() {
         />
         {warningEmail && <p>{warningEmail}</p>}
         <br />
-        <br/>
+        <br />
         <input
           className="input is-primary input is-hovered"
           type="password"
@@ -79,7 +79,8 @@ function Register() {
           onChange={handleInputChangePassword}
           required
         />
-        <br/><br/>
+        <br />
+        <br />
         {warningPassword && <p>{warningPassword}</p>}
         <button className="button" type="submit">
           Register
