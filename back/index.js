@@ -10,17 +10,17 @@ const withAuth = require("./middleware");
 const userRouter = require("./routes/Users.js");
 const Product = require("./models/Product");
 
-/* var fonoapi = require("fonoapi-nodejs");
-fonoapi.token = "d045b6783ccbbaaf96088d427329ebd34c26682c6ee6d65e"; */
+// var fonoapi = require("fonoapi-nodejs");
+// fonoapi.token = "d045b6783ccbbaaf96088d427329ebd34c26682c6ee6d65e"; 
 
 // get latest devices from apple (limit result to 5)
-/* fonoapi.getLatest(myCallback, 100, "apple");
+//  fonoapi.getLatest(myCallback, 100, "sony");
 
-function myCallback(queryString, data) {
-  Product.create(data)
-    .then((dbRes) => console.log(dbRes))
-    .catch((dbErr) => console.log(dbErr));
-} */
+// function myCallback(queryString, data) {
+//   Product.create(data)
+//     .then((dbRes) => console.log(dbRes))
+//     .catch((dbErr) => console.log(dbErr));
+// } 
 
 var corsOptions = {
   origin: "http://localhost:3000",

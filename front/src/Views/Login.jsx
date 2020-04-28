@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "bulma/css/bulma.css";
-import Navbar from "../Components/Navbar";
+import Navbar from "../components/Navbar";
 const axios = require("axios");
 
 function Login(props) {

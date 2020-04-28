@@ -84,19 +84,19 @@ router.post("/api/createuser", function (req, res, next) {
   });
 });
 
-router.post("/admin", withAuth, (req, res, next) => {
-  const { text } = req.body.user;
-  User.findByIdAndUpdate(req.user_id, { text: text })
-    .then((updatedUser) => {
-      res.status(200).send(updatedUser);
-    })
-    .catch(next);
-});
+// router.post("/admin", withAuth, (req, res, next) => {
+//   const { text } = req.body.user;
+//   User.findByIdAndUpdate(req.user_id, { text: text })
+//     .then((updatedUser) => {
+//       res.status(200).send(updatedUser);
+//     })
+//     .catch(next);
+// });
 
-router.get("/admin", withAuth, (req, res, next) => {
-  User.findById(req.user_id)
-    .then((dbRes) => res.status(200).json(dbRes))
-    .catch(next);
-});
+// router.get("/admin", withAuth, (req, res, next) => {
+//   User.findById(req.user_id)
+//     .then((dbRes) => res.status(200).json(dbRes))
+//     .catch(next);
+// });
 
 module.exports = router;

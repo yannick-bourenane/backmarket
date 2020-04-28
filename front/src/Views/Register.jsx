@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Navbar from "../Components/Navbar";
+import Navbar from "../components/Navbar";
 const axios = require("axios");
 
 function Register() {
