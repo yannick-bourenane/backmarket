@@ -25,7 +25,10 @@ const ProductSchema = new mongoose.Schema({
   nfc: String,
   camera: String,
   battery_life: String,
-  pricePhone: { type: Number /* , required: true */ },
+  pricePhone: {
+    type: Number,
+    default: 0 /* , required: true */,
+  },
   image: { type: String, default: "/images/defaultPhone.png" },
   reviews: [
     {
@@ -33,7 +36,10 @@ const ProductSchema = new mongoose.Schema({
       comment: { type: String /* , required: true */ },
     },
   ],
-  stock: { type: Number /* , required: true */, default: 50 },
+  stock: {
+    type: Number /* , required: true */,
+    default: 50,
+  },
   highlight: {
     type: Boolean,
     default: false,

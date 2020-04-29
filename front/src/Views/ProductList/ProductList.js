@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { IconButton, Grid, Typography } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 import { ProductsToolbar, ProductCard } from './components';
-import mockData from './data';
+import axios from "axios"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,9 +23,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ProductList = () => {
+
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    axios.get(process.env.REACT_APP_BACKEND_URL + "/admin/products").then(products => {
+      setProducts(products.data)
+    })
+  }, [])
+
   const classes = useStyles();
 
-  const [products] = useState(mockData);
+
+
 
   return (
     <div className={classes.root}>
@@ -35,10 +45,10 @@ const ProductList = () => {
           container
           spacing={3}
         >
-          {products.map(product => (
+          {products.length && products.map(product => (
             <Grid
               item
-              key={product.id}
+              key={product._id}
               lg={4}
               md={6}
               xs={12}

@@ -11,18 +11,59 @@ const userRouter = require("./routes/Users.js");
 const adminRouter = require("./routes/Admin.js");
 const Product = require("./models/Product");
 
-// var fonoapi = require("fonoapi-nodejs");
-// fonoapi.token = "d045b6783ccbbaaf96088d427329ebd34c26682c6ee6d65e";
+/* const images = [
+  "/images/defaultPhone.png",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const randomImage = images[Math.floor(Math.random() * images.length)]; */
 
-// get latest devices from apple (limit result to 5)
-//  fonoapi.getLatest(myCallback, 100, "sony");
+/* var fonoapi = require("fonoapi-nodejs");
+fonoapi.token = "d045b6783ccbbaaf96088d427329ebd34c26682c6ee6d65e";
 
-// function myCallback(queryString, data) {
-//   Product.create(data)
-//     .then((dbRes) => console.log(dbRes))
-//     .catch((dbErr) => console.log(dbErr));
-// }
+//get latest devices from apple (limit result to 5)
+fonoapi.getLatest(myCallback, 100, "asus");
 
+function myCallback(queryString, data) {
+  Product.create(data)
+    .then((dbRes) => console.log(dbRes))
+    .catch((dbErr) => console.log(dbErr));
+} */
+
+function updatePrice() {
+  Product.find({}, function (err, items) {
+    items.forEach(function (item) {
+      let stockA = Math.floor(Math.random() * (1000 - 0) + 0);
+      Product.update(
+        {
+          _id: item._id,
+        },
+        {
+          $set: {
+            stock: stockA,
+          },
+        }
+      )
+        .exec()
+        .then(function (data) {
+          console.log("It works");
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    });
+  });
+}
+//updatePrice();
 var corsOptions = {
   origin: process.env.CLIENT_URL,
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204

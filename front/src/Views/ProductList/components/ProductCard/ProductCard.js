@@ -12,6 +12,9 @@ import {
 } from '@material-ui/core';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
+import PhonelinkEraseIcon from '@material-ui/icons/PhonelinkErase';
+
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -54,7 +57,7 @@ const ProductCard = props => {
           <img
             alt="Product"
             className={classes.image}
-            src={product.imageUrl}
+            src={product.image}
           />
         </div>
         <Typography
@@ -62,13 +65,13 @@ const ProductCard = props => {
           gutterBottom
           variant="h4"
         >
-          {product.title}
+          {product.DeviceName}
         </Typography>
         <Typography
           align="center"
           variant="body1"
         >
-          {product.description}
+
         </Typography>
       </CardContent>
       <Divider />
@@ -81,12 +84,12 @@ const ProductCard = props => {
             className={classes.statsItem}
             item
           >
-            <AccessTimeIcon className={classes.statsIcon} />
+            {product.stock ? <PhoneIphoneIcon className={classes.statsIcon} /> : <PhonelinkEraseIcon className={classes.statsIcon} />}
             <Typography
               display="inline"
               variant="body2"
             >
-              Updated 2hr ago
+              {product.stock}
             </Typography>
           </Grid>
           <Grid
