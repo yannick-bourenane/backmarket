@@ -20,40 +20,41 @@ import {
 } from "./Views";
 
 const Routes = () => {
+  const adminPath = "/admin"
   return (
     <BrowserRouter>
       <Switch>
-        <Redirect exact from="/" to="/dashboard" />
+        {/* <Redirect exact from="/" to="/admin" /> */}
         <RouteWithLayout
           component={DashboardView}
           exact
           layout={MainLayout}
-          path="/dashboard"
+          path={adminPath}
         />
         <RouteWithLayout
           component={UserListView}
           exact
           layout={MainLayout}
-          path="/users"
+          path={adminPath + "/users"}
         />
         <RouteWithLayout
           component={ProductListView}
           exact
           layout={MainLayout}
-          path="/products"
+          path={adminPath + "/products"}
         />
    
         <RouteWithLayout
           component={AccountView}
           exact
           layout={MainLayout}
-          path="/account"
+          path={adminPath + "/account"}
         />
         <RouteWithLayout
           component={SettingsView}
           exact
           layout={MainLayout}
-          path="/settings"
+          path={adminPath + "/settings"}
         />
        
         <RouteWithLayout

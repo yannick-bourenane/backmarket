@@ -2,7 +2,7 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const express = require("express");
 const router = new express.Router();
-const secret = "mysecretsshhh";
+const secret = process.env.SECRET_SESSION;
 const withAuth = require("../middleware");
 
 router.post("/api/authenticate", function (req, res) {

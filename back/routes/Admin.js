@@ -11,3 +11,13 @@ router.get("/admin", (req, res, next) => {
     .catch(next);
 });
 
+router.get("/admin/products", (req, res, next) => {
+  Product.find()
+    .then((products) => {
+      res.status(200);
+      console.log(products);
+    })
+    .catch(next);
+});
+
+module.exports = router;

@@ -39,34 +39,34 @@ const useStyles = makeStyles(theme => ({
 
 const Sidebar = props => {
   const { open, variant, onClose, className, ...rest } = props;
-
+  const adminPath = "/admin"
   const classes = useStyles();
 
   const pages = [
     {
       title: 'Dashboard',
-      href: '/dashboard',
+      href: adminPath,
       icon: <DashboardIcon />
     },
     {
       title: 'Users',
-      href: '/users',
+      href: adminPath + '/users',
       icon: <PeopleIcon />
     },
     {
       title: 'Products',
-      href: '/products',
+      href: adminPath + '/products',
       icon: <ShoppingBasketIcon />
     },
 
     {
       title: 'Account',
-      href: '/account',
+      href: adminPath + '/account',
       icon: <AccountBoxIcon />
     },
     {
       title: 'Settings',
-      href: '/settings',
+      href: adminPath + '/settings',
       icon: <SettingsIcon />
     }
   ];
