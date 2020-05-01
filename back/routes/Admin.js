@@ -18,4 +18,11 @@ router.get("/admin/products", (req, res, err) => {
     .catch(err);
 });
 
+router.get("/admin/users", (req, res, err) => {
+  User.find()
+    .limit(20)
+    .then((user) => res.status(200).json(user))
+    .catch(err);
+});
+
 module.exports = router;

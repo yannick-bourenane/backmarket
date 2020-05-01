@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { IconButton, Grid, Typography } from '@material-ui/core';
+import { IconButton, Grid, Typography} from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import { ProductsToolbar, ProductCard } from './components';
 import axios from "axios"
@@ -22,9 +24,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
 const ProductList = () => {
 
   const [products, setProducts] = useState([]);
+  const [search,setSearch] = useState("");
 
   useEffect(() => {
     axios.get(process.env.REACT_APP_BACKEND_URL + "/admin/products").then(products => {
@@ -32,20 +36,34 @@ const ProductList = () => {
     })
   }, [])
 
+  function handleFilter () {
+   return products.filter((p) => p.DeviceName.toLowerCase().includes(search.toLowerCase()));
+  }
+
+  const filtered = handleFilter()
+
   const classes = useStyles();
-
-
 
 
   return (
     <div className={classes.root}>
-      <ProductsToolbar />
+      <Autocomplete
+  id="grouped-demo"
+  options={products}
+  groupBy={(products) => products.Brand}
+  getOptionLabel={(products) => products.DeviceName}
+  style={{ width: 300 }}
+  renderInput={(params) => <TextField {...params}  onSelect={e =>setSearch(e.target.value)}
+label="Search by devices" variant="outlined" />}
+/>
+
+{/* {console.log(products)} */}
       <div className={classes.content}>
         <Grid
           container
           spacing={3}
         >
-          {products.length && products.map(product => (
+          {filtered.length && filtered.map(product => (
             <Grid
               item
               key={product._id}

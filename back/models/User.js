@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema({
   lastname: { type: String, required: true },
   address: { type: String, required: true },
   zipcode: { type: String, required: true },
+  city: { type: String, required: true },
   country: { type: String, required: true },
   date_register: { type: String, default: moment().format(), required: true },
   date_last_login: { type: String, default: moment().format(), required: true },
@@ -23,6 +24,8 @@ const UserSchema = new mongoose.Schema({
     },
   ],
 });
+
+
 
 UserSchema.pre("save", function (next) {
   if (this.isNew || this.isModified("password")) {

@@ -10,46 +10,67 @@ const withAuth = require("./middleware");
 const userRouter = require("./routes/Users.js");
 const adminRouter = require("./routes/Admin.js");
 const Product = require("./models/Product");
+const User = require("./models/User");
 
-/* var fonoapi = require("fonoapi-nodejs");
-fonoapi.token = "d045b6783ccbbaaf96088d427329ebd34c26682c6ee6d65e";
+// var fonoapi = require("fonoapi-nodejs");
+// fonoapi.token = "d045b6783ccbbaaf96088d427329ebd34c26682c6ee6d65e";
 
-//get latest devices from apple (limit result to 5)
-fonoapi.getLatest(myCallback, 100, "asus");
+// //get latest devices from apple (limit result to 5)
+// fonoapi.getLatest(myCallback, 100, "samsung");
 
-function myCallback(queryString, data) {
-  Product.create(data)
+// function myCallback(queryString, data) {
+//   Product.create(data)
+//     .then((dbRes) => console.log(dbRes))
+//     .catch((dbErr) => console.log(dbErr));
+// }
+
+// const images = ["sony1.jpg", "sony2.jpg", "sony3.jpg"];
+
+function updateImage() {
+  Product.find({}, function (err, items) {
+    items.forEach(function (item) {
+      Product.update(
+        {
+          _id: item._id,
+          // Brand: "Sony",
+        },
+        {
+          $set: {
+            stock: Math.floor(Math.random() * (1000 - 0) + 0),
+          },
+        }
+      )
+        .exec()
+        .then(function (data) {
+          console.log("It works");
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    });
+  });
+}
+// updateImage();
+
+function createuser() {
+  let newUser = {
+    email: "toto@gmail.com",
+    password: "12345678",
+    role: "admin",
+    firstname: "Toto",
+    lastname: "Dupuis",
+    address: "7 rue des tilleuls",
+    zipcode: "14123",
+    city: "Cormelles-le-Royal",
+    country: "France",
+  };
+  User.create(newUser)
     .then((dbRes) => console.log(dbRes))
     .catch((dbErr) => console.log(dbErr));
-} */
+}
 
-// const images = ["apple1.jpg", "apple2.jpg", "apple3.jpg"];
+// createuser();
 
-// function updateImage() {
-//   Product.find({}, function (err, items) {
-//     items.forEach(function (item) {
-//       Product.update(
-//         {
-//           _id: item._id,
-//           Brand: "Apple",
-//         },
-//         {
-//           $set: {
-//             image: images,
-//           },
-//         }
-//       )
-//         .exec()
-//         .then(function (data) {
-//           console.log("It works");
-//         })
-//         .catch(function (err) {
-//           console.log(err);
-//         });
-//     });
-//   });
-// }
-//updateImage();
 var corsOptions = {
   origin: process.env.CLIENT_URL,
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
