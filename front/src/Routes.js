@@ -9,6 +9,8 @@ import Admin from "./Views/Admin";
 import Home from "./Views/Home";
 import withAuth from "./components/WithAuth";
 import "./styles/App.css";
+import ProductAdd from "./Views/ProductList/components/ProductAdd";
+import ProductEdit from "./Views/ProductList/components/ProductEdit";
 
 import {
   Dashboard as DashboardView,
@@ -20,7 +22,7 @@ import {
 } from "./Views";
 
 const Routes = () => {
-  const adminPath = "/admin"
+  const adminPath = "/admin";
   return (
     <BrowserRouter>
       <Switch>
@@ -43,7 +45,18 @@ const Routes = () => {
           layout={MainLayout}
           path={adminPath + "/products"}
         />
-   
+        <RouteWithLayout
+          component={ProductAdd}
+          exact
+          layout={MainLayout}
+          path={adminPath + "/products/add/"}
+        />
+        <RouteWithLayout
+          component={ProductEdit}
+          exact
+          layout={MainLayout}
+          path={adminPath + "/products/edit/:id"}
+        />
         <RouteWithLayout
           component={AccountView}
           exact
@@ -56,7 +69,7 @@ const Routes = () => {
           layout={MainLayout}
           path={adminPath + "/settings"}
         />
-       
+
         <RouteWithLayout
           component={NotFoundView}
           exact

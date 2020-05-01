@@ -27,17 +27,19 @@ const ProductSchema = new mongoose.Schema({
   battery_life: String,
   pricePhone: {
     type: Number,
-    default: 0 /* , required: true */,
+    default: 0,
+    required: true,
   },
   image: { type: [String], default: ["/defaultPhone.png"] },
   reviews: [
     {
-      rate: { type: Number /* , required: true */ },
-      comment: { type: String /* , required: true */ },
+      rate: { type: Number, required: true },
+      comment: { type: String, required: true },
     },
   ],
   stock: {
-    type: Number /* , required: true */,
+    type: Number,
+    required: true,
     default: 50,
   },
   highlight: {
