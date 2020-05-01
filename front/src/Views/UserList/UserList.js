@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
-
 import { UsersToolbar, UsersTable } from './components';
-import mockData from './data';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,15 +13,37 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UserList = () => {
+  const [users,setUsers] = useState([]);
+
+  useEffect(() => {
+    axios.get(process.env.REACT_APP_BACKEND_URL + "/admin/users").then(users => {
+      setUsers(users.data)
+    })
+    }
+  , [])
+  const [search, setSearch] = useState("")
+
+   function handleSearch() {
+    if (search) {
+    return users.filter((user) => user.lastname.toLowerCase().includes(search.toLowerCase()));}
+    return users;
+    }
+
+  let filteredUsers = handleSearch()
+
+  function getSearch(e) {
+    setSearch(e.target.value)
+  }
+
   const classes = useStyles();
 
-  const [users] = useState(mockData);
 
   return (
     <div className={classes.root}>
-      <UsersToolbar />
+    {/* {console.log(filteredUsers)} */}
+      <UsersToolbar users={users} getSearch={getSearch}/>
       <div className={classes.content}>
-        <UsersTable users={users} />
+        <UsersTable users={users} filteredUsers={filteredUsers}/>
       </div>
     </div>
   );

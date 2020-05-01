@@ -42,8 +42,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersTable = props => {
-  const { className, users, ...rest } = props;
-
+  const { className, users, filteredUsers, ...rest } = props;
+  console.log(filteredUsers)
   const classes = useStyles();
 
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -52,7 +52,6 @@ const UsersTable = props => {
 
   const handleSelectAll = event => {
     const { users } = props;
-
     let selectedUsers;
 
     if (event.target.checked) {
@@ -117,12 +116,12 @@ const UsersTable = props => {
                   <TableCell>Name</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Location</TableCell>
-                  <TableCell>Phone</TableCell>
+                  <TableCell>Role</TableCell>
                   <TableCell>Registration date</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.slice(0, rowsPerPage).map(user => (
+                {filteredUsers && filteredUsers.slice(0, rowsPerPage).map(user => (
                   <TableRow
                     className={classes.tableRow}
                     hover
@@ -143,19 +142,19 @@ const UsersTable = props => {
                           className={classes.avatar}
                           src={user.avatarUrl}
                         >
-                          {getInitials(user.name)}
+                          {getInitials(user.lastname)}
                         </Avatar>
-                        <Typography variant="body1">{user.name}</Typography>
+                        <Typography variant="body1">{user.lastname}</Typography>
                       </div>
                     </TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>
-                      {user.address.city}, {user.address.state},{' '}
-                      {user.address.country}
+                      {user.address}, {user.city},{user.zipcode}{' '}
+                      {user.country}
                     </TableCell>
-                    <TableCell>{user.phone}</TableCell>
+                    <TableCell>{user.role}</TableCell>
                     <TableCell>
-                      {moment(user.createdAt).format('DD/MM/YYYY')}
+                      {user.date_register}
                     </TableCell>
                   </TableRow>
                 ))}
