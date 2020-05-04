@@ -4,6 +4,19 @@ const express = require("express");
 const router = new express.Router();
 const secret = process.env.SECRET_SESSION;
 const withAuth = require("../middleware");
+const path = require("path");
+const multer = require("multer");
+const storage = multer.diskStorage({
+   destination: "./public/images/avatars",
+   filename: function(req, file, cb){
+      cb(null,"IMAGE-" + Date.now() + path.extname(file.originalname));
+   }
+});
+
+const upload = multer({
+   storage: storage,
+   limits:{fileSize: 1000000},
+}).single("myImage")
 
 router.post("/api/authenticate", function (req, res) {
   const { email, password } = req.body;
@@ -41,13 +54,13 @@ router.post("/api/authenticate", function (req, res) {
 });
 
 router.post("/api/createuser", function (req, res, next) {
-  const { email, password } = req.body.user;
-
+  const { email, password, firstname, lastname, address, zipcode, city, country } = req.body.user;
+  const avatar = req.file;
+  console.log("ceci est l'avatar ===>" + avatar)
   if (!email || !password) {
     res.status(400).json({ message: "Provide username and password" });
     return;
   }
-
   if (password.length < 7) {
     res.status(400).json({
       message:
@@ -70,10 +83,18 @@ router.post("/api/createuser", function (req, res, next) {
     const aNewUser = new User({
       email: email,
       password: password,
+      firstname:firstname, 
+      lastname:lastname, 
+      address:address, 
+      zipcode:zipcode, 
+      city:city, 
+      country:country,
+      avatar:avatar,
     });
 
     aNewUser.save((err) => {
       if (err) {
+        console.log(err)
         res
           .status(400)
           .json({ message: "Saving user to database went wrong." });
