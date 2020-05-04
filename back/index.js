@@ -69,7 +69,7 @@ function createuser() {
     .catch((dbErr) => console.log(dbErr));
 }
 
-// createuser();
+//createuser();
 
 var corsOptions = {
   origin: process.env.CLIENT_URL,
