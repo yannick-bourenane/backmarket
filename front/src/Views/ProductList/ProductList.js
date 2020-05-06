@@ -7,7 +7,8 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
-
+import Alert from "@material-ui/lab/Alert";
+import AlertTitle from "@material-ui/lab/AlertTitle";
 import { ProductsToolbar, ProductCard } from "./components";
 import axios from "axios";
 
@@ -26,10 +27,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProductList = () => {
+const ProductList = (props) => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
-
   useEffect(() => {
     axios
       .get(process.env.REACT_APP_BACKEND_URL + "/admin/products")
@@ -75,8 +75,18 @@ const ProductList = () => {
           Add a product
         </Button>
       </Grid>
-
-      {/* {console.log(products)} */}
+      <div className={classes.content}>
+        {props.location.msg && (
+          <Grid>
+            <Alert
+              variant="filled"
+              severity={props.location.msg.type && props.location.msg.type}
+            >
+              {props.location.msg.msg}
+            </Alert>
+          </Grid>
+        )}
+      </div>
       <div className={classes.content}>
         <Grid container spacing={3}>
           {filtered.length &&

@@ -10,6 +10,7 @@ import Fade from "@material-ui/core/Fade";
 import Typography from "@material-ui/core/Typography";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Alert from "@material-ui/lab/Alert";
+import { Redirect } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -34,14 +35,11 @@ const ProductAdd = (props) => {
   const classes = useStyles();
 
   const [values, setValues] = useState({
-    /*     stock: 20,
-    pricePhone: 10,
-    Brand: "toto",
-    DeviceName: "abon",
-    highlight: false, */
+    highlight: false,
   });
   const [showMore, setShowMore] = useState(false);
   const [msg, setMsg] = useState({ type: "", msg: "" });
+  const [created, setCreated] = useState({ isCreated: false, msg: {} });
 
   const handleShowMore = () => {
     setShowMore((prev) => !prev);
@@ -54,8 +52,11 @@ const ProductAdd = (props) => {
         e.target.type === "checkbox" ? e.target.checked : e.target.value,
     });
   };
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let dataForm = new FormData();
+    for (let key in values) {
+      dataForm.append(key, values[key]);
+    }
     if (values.image.length) {
       for (let i = 0; i < values.image.length; i++) {
         dataForm.append("file", values.image[i]);
@@ -64,18 +65,26 @@ const ProductAdd = (props) => {
     axios
       .post(process.env.REACT_APP_BACKEND_URL + "/admin/products", dataForm)
       .then((response) => {
-        console.log(response);
-        setMsg(response.data);
+        setCreated({ isCreated: true, msg: response.data });
+        //setMsg(response.data);
       })
       .catch((error) => {
         setMsg(error.response.data);
       });
   };
-  const testChange = (e) => {
+  const handleImages = (e) => {
     setValues({ ...values, image: e });
   };
   return (
     <div className={classes.root}>
+      {created.isCreated && (
+        <Redirect
+          to={{
+            pathname: "/admin/products/",
+            msg: created.msg,
+          }}
+        />
+      )}
       <Grid container>
         <Card {...rest} className={clsx(classes.root, className)}>
           <form autoComplete="off" noValidate>
@@ -136,8 +145,8 @@ const ProductAdd = (props) => {
                   </InputLabel>
                   <DropzoneArea
                     name="file"
-                    onChange={testChange}
-                    acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
+                    onChange={handleImages}
+                    acceptedFiles={["image/jpeg", "image/png", "image/jpg"]}
                     maxFileSize={5000000}
                     inputProps={{ name: "file" }}
                   />
@@ -201,6 +210,7 @@ const ProductAdd = (props) => {
                       name="technology"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.technology && values.technology}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -211,6 +221,7 @@ const ProductAdd = (props) => {
                       name="dimensions"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.dimensions && values.dimensions}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -221,6 +232,7 @@ const ProductAdd = (props) => {
                       name="weight"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.weight && values.weight}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -231,6 +243,7 @@ const ProductAdd = (props) => {
                       name="sim"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.sim && values.sim}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -241,6 +254,7 @@ const ProductAdd = (props) => {
                       name="type"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.type && values.type}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -251,6 +265,7 @@ const ProductAdd = (props) => {
                       name="size"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.size && values.size}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -261,6 +276,7 @@ const ProductAdd = (props) => {
                       name="resolution"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.resolution && values.resolution}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -271,6 +287,7 @@ const ProductAdd = (props) => {
                       name="card_slot"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.card_slot && values.card_slot}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -281,6 +298,7 @@ const ProductAdd = (props) => {
                       name="_3_5mm_jack_"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values._3_5mm_jack_ && values._3_5mm_jack_}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -291,6 +309,7 @@ const ProductAdd = (props) => {
                       name="bluetooth"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.bluetooth && values.bluetooth}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -301,6 +320,7 @@ const ProductAdd = (props) => {
                       name="gps"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.gps && values.gps}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -311,6 +331,7 @@ const ProductAdd = (props) => {
                       name="usb"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.usb && values.usb}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -321,6 +342,7 @@ const ProductAdd = (props) => {
                       name="colors"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.colors && values.colors}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -331,6 +353,7 @@ const ProductAdd = (props) => {
                       name="cpu"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.cpu && values.cpu}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -341,6 +364,7 @@ const ProductAdd = (props) => {
                       name="internal"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.internal && values.internal}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -351,6 +375,7 @@ const ProductAdd = (props) => {
                       name="os"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.os && values.os}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -361,6 +386,7 @@ const ProductAdd = (props) => {
                       name="primary_"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.primary_ && values.primary_}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -371,6 +397,7 @@ const ProductAdd = (props) => {
                       name="secondary"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.secondary && values.secondary}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -381,6 +408,7 @@ const ProductAdd = (props) => {
                       name="features"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.features && values.features}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -391,6 +419,7 @@ const ProductAdd = (props) => {
                       name="nfc"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.nfc && values.nfc}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -401,6 +430,7 @@ const ProductAdd = (props) => {
                       name="camera"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.camera && values.camera}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -411,6 +441,7 @@ const ProductAdd = (props) => {
                       name="battery_life"
                       onChange={handleChange}
                       variant="outlined"
+                      defaultValue={values.battery_life && values.battery_life}
                     />
                   </Grid>
                 </Grid>

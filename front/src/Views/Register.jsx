@@ -37,8 +37,8 @@ function Register() {
             email: email,
             password: password,
           },
-        },
-        { withCredentials: true }
+        }
+        // { withCredentials: true }
       )
       .then((response) => {
         if (response.data.status === "created") {

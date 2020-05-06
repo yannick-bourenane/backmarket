@@ -1,3 +1,7 @@
 .delete-item:hover {
   color: red;
 }
+
+.edit-item:hover {
+  color: #3F51B5
+}
