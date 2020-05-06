@@ -105,6 +105,16 @@ router.post("/api/createuser", function (req, res, next) {
   });
 });
 
+router.patch("/:id", (req, res, next) => {
+  const newUser = { ...req.body.user };
+  userModel
+    .findByIdAndUpdate(req.params.id, newUser, { new: true })
+    .then(user => {
+      res.status(200).json(user);
+    })
+    .catch(next);
+});
+
 // router.post("/admin", withAuth, (req, res, next) => {
 //   const { text } = req.body.user;
 //   User.findByIdAndUpdate(req.user_id, { text: text })

@@ -27,7 +27,7 @@ router.get("/admin/products", (req, res, err) => {
     .catch(err);
 });
 
-router.post("/admin/products", upload, (req, res, err) => {
+// router.post("/admin/products", upload, (req, res, err) => {
   // upload(req, res, function (err) {
   //   if (err instanceof multer.MulterError) {
   //     return res.status(500).json(err);
@@ -36,37 +36,37 @@ router.post("/admin/products", upload, (req, res, err) => {
   //   }
   //   return res.status(200).send(req.file);
   // });
-  const product = req.body.values;
-  if (
-    !product.DeviceName ||
-    !product.Brand ||
-    !product.pricePhone ||
-    !product.stock
-  ) {
-    res
-      .status(403)
-      .json({ type: "error", msg: "Fill all the required fields please." });
-  } else {
-    Product.findOne({ DeviceName: product.DeviceName }).then((product) => {
-      if (product) {
-        res.status(403).json({
-          type: "error",
-          msg: "A product with this name already exist.",
-        });
-      } else {
-        console.log(req.body);
+//   const product = req.body.values;
+//   if (
+//     !product.DeviceName ||
+//     !product.Brand ||
+//     !product.pricePhone ||
+//     !product.stock
+//   ) {
+//     res
+//       .status(403)
+//       .json({ type: "error", msg: "Fill all the required fields please." });
+//   } else {
+//     Product.findOne({ DeviceName: product.DeviceName }).then((product) => {
+//       if (product) {
+//         res.status(403).json({
+//           type: "error",
+//           msg: "A product with this name already exist.",
+//         });
+//       } else {
+//         console.log(req.body);
 
-        Product.create(req.body.values)
-          .then((dbRes) =>
-            res.status(200).json({ type: "success", msg: "Product created !" })
-          )
-          .catch((dbErr) => {
-            console.log(dbErr);
-          });
-      }
-    });
-  }
-});
+//         Product.create(req.body.values)
+//           .then((dbRes) =>
+//             res.status(200).json({ type: "success", msg: "Product created !" })
+//           )
+//           .catch((dbErr) => {
+//             console.log(dbErr);
+//           });
+//       }
+//     });
+//   }
+// });
 
 router.get("/admin/users", (req, res, err) => {
   User.find()

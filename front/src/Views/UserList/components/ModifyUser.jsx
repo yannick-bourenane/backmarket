@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const Register = props => {
+const ModifyUser = match => {
   const { className, ...rest } = props;
   const [countries, setCountries] = useState([]);
   const [avatar, setAvatar] = useState(null);
@@ -61,6 +61,13 @@ useEffect(() => {
   })
 }, [])
 
+useEffect(() => {
+    APIHandler.get(`/users/${match.match.params.id}`)
+        .then(apiRes => {
+            setUser(apiRes.data)
+        })
+}, [])
+
 const handleSubmit = async (event) => {
   event.preventDefault();
   const formData = new FormData();
@@ -70,10 +77,9 @@ const handleSubmit = async (event) => {
           'content-type': 'multipart/form-data'
       }
   };
-console.log(formData)
     axios
-      .post(
-        process.env.REACT_APP_BACKEND_URL + "/api/createuser",
+      .get(
+        process.env.REACT_APP_BACKEND_URL + `users/${match.match.params.id}`,
         {formData, config,             
           user: {
             email: values.email,
