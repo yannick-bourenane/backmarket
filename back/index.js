@@ -12,22 +12,16 @@ const adminRouter = require("./routes/Admin.js");
 const Product = require("./models/Product");
 const User = require("./models/User");
 
-var corsOptions = {
-  origin: process.env.CLIENT_URL,
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  preflightContinue: false,
-  credentials: true
-};
-
-app.use(cors(corsOptions));
-
-app.use(express.static("public"));
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
-
+var corsOptions = {
+  origin: process.env.CLIENT_URL,
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+app.use(cors(corsOptions));
 // var fonoapi = require("fonoapi-nodejs");
 // fonoapi.token = "d045b6783ccbbaaf96088d427329ebd34c26682c6ee6d65e";
 
@@ -87,15 +81,7 @@ function createuser() {
 
 //createuser();
 
-
-
-// var corsOptions = {
-//   origin: "*",
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   preflightContinue: false,
-//   optionsSuccessStatus: 204,
-//   credentials: true,
-// };
+app.use(express.static("public"));
 app.use(cookieParser());
 app.use(express.json());
 app.use(userRouter);
