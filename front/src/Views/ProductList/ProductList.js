@@ -8,10 +8,8 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import Alert from "@material-ui/lab/Alert";
-import AlertTitle from "@material-ui/lab/AlertTitle";
 import { ProductsToolbar, ProductCard } from "./components";
 import axios from "axios";
-import Popover from '@material-ui/core/Popover';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,8 +27,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProductList = (props) => {
-  const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [productsToShow, setProductsToShow] = useState([]);
   const [search, setSearch] = useState("");
   const [pagination, setPagination] = useState(1);
   useEffect(() => {
@@ -41,23 +40,39 @@ const ProductList = (props) => {
       });
   }, [props.location.msg]);
   useEffect(() => {
-    setProducts(allProducts.filter((product, i) => i < 20));
+    setFilteredProducts(allProducts)
   }, [allProducts])
   
+  useEffect(() => {
+    (async function () {
+      let result = [...allProducts]
+      result = await result.filter((p) =>
+          p.DeviceName.toLowerCase().includes(search.toLowerCase())
+      )
+      await setPagination(1);
+      await setFilteredProducts(result)
+    })();
+    
+  }, [search])
+  useEffect(() => {
+    setProductsToShow(filteredProducts.filter((p, i) => i >= (pagination - 1) * 20 && i < pagination * 20));
+  }, [filteredProducts, pagination])
 
-  function handleFilter() {
-    let result = [...products]
-    if (search) {
-      result.filter((p) =>
-      p.DeviceName.toLowerCase().includes(search.toLowerCase())
-    );
-    }
-    return result
-  }
+  // function handleFilter() {
+  //   let result = [...allProducts]
+  //   if (search) {
+  //       // On search reset pagination
+  //       result = result.filter((p) =>
+  //       p.DeviceName.toLowerCase().includes(search.toLowerCase())
+  //     );
+      
+  //   }
+  //   result = result.filter((p, i) => i >= (pagination - 1) * 20 && i < pagination * 20);
+  //   setFilteredProducts(result)
+  // }
   const handlePagination = nb => {
-    return products.filter((p) => pagination)
+    setPagination(pagination+nb)
   }
-  const filtered = handleFilter();
 
   const classes = useStyles();
 
@@ -102,8 +117,8 @@ const ProductList = (props) => {
       </div>
       <div className={classes.content}>
         <Grid container spacing={3}>
-          {filtered.length &&
-            filtered.map((product) => (
+          {productsToShow.length &&
+            productsToShow.map((product) => (
               <Grid item key={product._id} lg={4} md={6} xs={12}>
                 <ProductCard product={product} />
               </Grid>
@@ -111,12 +126,12 @@ const ProductList = (props) => {
         </Grid>
       </div>
       <div className={classes.pagination}>
-        <Typography variant="caption">{products.length*(pagination-1)+1}-{products.length*(pagination)} of {allProducts.length && allProducts.length}</Typography>
+        <Typography variant="caption">{productsToShow.length*(pagination-1)+1}-{productsToShow.length*(pagination)} of {filteredProducts.length && filteredProducts.length}</Typography>
         <IconButton>
-          <ChevronLeftIcon />
+          <ChevronLeftIcon onClick={pagination > 1 ? (()=>handlePagination(-1)) : undefined}/>
         </IconButton>
         <IconButton>
-          <ChevronRightIcon onClick={() => handlePagination(1)} />
+          <ChevronRightIcon onClick={pagination < (Math.floor(filteredProducts.length/20)) ? (()=>handlePagination(1)) : undefined} />
         </IconButton>
       </div>
     </div>
