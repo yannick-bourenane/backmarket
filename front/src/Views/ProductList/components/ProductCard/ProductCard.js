@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { makeStyles, withStyles } from "@material-ui/styles";
@@ -19,6 +19,10 @@ import StarsIcon from "@material-ui/icons/Stars";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
+import axios from "axios";
+import { Redirect } from "react-router-dom";
+import Popover from '@material-ui/core/Popover';
+import Button from '@material-ui/core/Button';
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -61,15 +65,56 @@ const useStyles = makeStyles((theme) => ({
   bolder: {
     fontWeight: "bolder",
   },
+  popover: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: theme.spacing(1),
+    border: "1px solid #e5e5e5"
+  },
+  button: {
+    marginLeft:theme.spacing(1)
+  }
 }));
 
 const ProductCard = (props) => {
   const { className, product, ...rest } = props;
-
+  const id = product._id;
+  const [deleted, setDeleted] = useState({ isDeleted: false, msg: {} });
   const classes = useStyles();
+
+  const [anchorDelete, setAnchorDelete] = useState(null);
+
+  const popoverClick = (event) => {
+    setAnchorDelete(event.currentTarget);
+  };
+
+  const popoverClose = () => {
+    setAnchorDelete(null);
+  };
+
+  const open = Boolean(anchorDelete);
+  const popoverId = open ? 'simple-popover' : undefined;
+
+
+  const deleteThisProduct = () => {
+    axios.delete(process.env.REACT_APP_BACKEND_URL + "/admin/products/delete/" + id)
+      .then(response => setDeleted({ isDeleted: true, msg: response.data }))
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
+      {deleted.isDeleted && (
+        <Redirect
+          to={{
+            pathname: "/admin/products/",
+            msg: deleted.msg,
+          }}
+        />
+      )}
       <CardContent>
         <Grid container justify="space-between">
           <Grid className={classes.statsItem} item>
@@ -84,11 +129,31 @@ const ProductCard = (props) => {
               <EditIcon className={"edit-item"} />
             </IconButton>
             <IconButton
-              href={`/admin/products/delete/${product._id}`}
+              aria-describedby={popoverId}
               className="no-padding"
+              onClick={popoverClick}
             >
               <HighlightOffIcon className={"delete-item"} />
             </IconButton>
+      <Popover
+        id={popoverId}
+        open={open}
+        anchorEl={anchorDelete}
+        onClose={popoverClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+          <Grid className={classes.popover} align="center" variant="h4">Delete this product ? 
+            <Button variant="contained" size="small" color="primary" className={classes.button} onClick={deleteThisProduct}> Confirm</Button>
+            <Button variant="contained" size="small" color="default" className={classes.button} onClick={popoverClose}> Cancel</Button>
+          </Grid>
+      </Popover>
           </Grid>
         </Grid>
         <div className={classes.imageContainer}>

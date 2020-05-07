@@ -33,8 +33,11 @@ let upload = multer({
 }); */
 
 router.get("/admin/products", (req, res, err) => {
+  //console.log(req.params.pageNb);
+  //const ProductPerPage = 20;
   Product.find()
-    .limit(20)
+    //.skip(ProductPerPage * req.params.pageNb)
+    //.limit(ProductPerPage)
     .sort({ _id: -1 })
     .then((products) => res.status(200).json(products))
     .catch(err);
@@ -89,6 +92,45 @@ router.post("/admin/products", (req, res, err) => {
       );
     }
   });
+});
+
+router.patch("/admin/products/:id", (req, res, err) => {
+  upload(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      return res.status(500).json(err);
+    } else if (err) {
+      return res.status(500).json(err);
+    }
+    const productInfo = req.body;
+    if (
+      !productInfo.DeviceName ||
+      !productInfo.Brand ||
+      !productInfo.pricePhone ||
+      !productInfo.stock
+    ) {
+      res
+        .status(403)
+        .json({ type: "error", msg: "Fill all the required fields please." });
+    }
+    req.files.length
+      ? (productInfo.image = req.files.map((file) => file.filename))
+      : (productInfo.image = "defaultPhone.png");
+    Product.findByIdAndUpdate(req.params.id, productInfo, {
+      new: true,
+    })
+      .then((product) =>
+        res.status(200).json({ type: "success", msg: "Product updated !" })
+      )
+      .catch((err) => console.log(err));
+  });
+});
+
+router.delete("/admin/products/delete/:id", (req, res, err) => {
+  Product.findByIdAndDelete(req.params.id)
+    .then((product) =>
+      res.status(200).json({ type: "success", msg: "Product deleted !" })
+    )
+    .catch((err) => console.log(err));
 });
 
 router.get("/admin/users", (req, res, err) => {

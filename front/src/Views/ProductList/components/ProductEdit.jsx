@@ -41,7 +41,7 @@ const ProductEdit = (props) => {
   });
   const [showMore, setShowMore] = useState(false);
   const [msg, setMsg] = useState({ type: "", msg: "" });
-  const [created, setCreated] = useState({ isCreated: false, msg: {} });
+  const [edited, setEdited] = useState({ isEdited: false, msg: {} });
 
   useEffect(() => {
     axios
@@ -54,7 +54,7 @@ const ProductEdit = (props) => {
         ) });
       })
       .catch((error) => {
-        setMsg(error.response.data);
+        console.log(error.response.data)
       });
   }, []);
 
@@ -70,41 +70,36 @@ const ProductEdit = (props) => {
     });
   };
   const handleSubmit = () => {
-    // let dataForm = new FormData();
-    // for (let key in values) {
-    //   dataForm.append(key, values[key]);
-    // }
-    // if (values.image.length) {
-    //   for (let i = 0; i < values.image.length; i++) {
-    //     dataForm.append("file", values.image[i]);
-    //   }
-    // }
-    // axios
-    //   .post(process.env.REACT_APP_BACKEND_URL + "/admin/products", dataForm)
-    //   .then((response) => {
-    //     setCreated({ isCreated: true, msg: response.data });
-    //     //setMsg(response.data);
-    //   })
-    //   .catch((error) => {
-    //     setMsg(error.response.data);
-    //   });
+    let dataForm = new FormData();
+    for (let key in values) {
+      dataForm.append(key, values[key]);
+    }
+    if (values.image.length) {
+      for (let i = 0; i < values.image.length; i++) {
+        dataForm.append("file", values.image[i]);
+      }
+    }
+    axios
+      .patch(process.env.REACT_APP_BACKEND_URL + "/admin/products/" + id, dataForm)
+      .then((response) => {
+        setEdited({ isEdited: true, msg: response.data });
+      })
+      .catch((error) => {
+        setMsg(error.response.data);
+      });
   };
   const handleImages = (e) => {
     setValues({ ...values, image: e });
   };
-  const forceUpdate = () => {
-    setValues({ ...values, path: ['https://upload.wikimedia.org/wikipedia/commons/e/e4/Color-blue.JPG'] })
-    console.log('hey')
-  }
   //debugger;
   return (
     <div className={classes.root}>
-      {console.log(values.DeviceName)}
-      {created.isCreated && (
+      {console.log(values)}
+      {edited.isEdited && (
         <Redirect
           to={{
             pathname: "/admin/products/",
-            msg: created.msg,
+            msg: edited.msg,
           }}
         />
       )}
@@ -170,7 +165,7 @@ const ProductEdit = (props) => {
                   />
                 </Grid>
                 <Grid item md={12} xs={12}>
-                  <InputLabel onClick={forceUpdate} className={classes.spaceBottom}>
+                  <InputLabel className={classes.spaceBottom}>
                     Images
                   </InputLabel>
                   {console.log(values)}
@@ -495,7 +490,7 @@ const ProductEdit = (props) => {
                 variant="contained"
                 onClick={handleSubmit}
               >
-                Add the product
+                Edit the product
               </Button>
             </CardActions>
           </form>

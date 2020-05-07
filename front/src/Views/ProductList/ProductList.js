@@ -11,6 +11,7 @@ import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
 import { ProductsToolbar, ProductCard } from "./components";
 import axios from "axios";
+import Popover from '@material-ui/core/Popover';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,21 +30,33 @@ const useStyles = makeStyles((theme) => ({
 
 const ProductList = (props) => {
   const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [search, setSearch] = useState("");
+  const [pagination, setPagination] = useState(1);
   useEffect(() => {
     axios
-      .get(process.env.REACT_APP_BACKEND_URL + "/admin/products")
+      .get(process.env.REACT_APP_BACKEND_URL + "/admin/products/")
       .then((products) => {
-        setProducts(products.data);
+        setAllProducts(products.data)
       });
-  }, []);
+  }, [props.location.msg]);
+  useEffect(() => {
+    setProducts(allProducts.filter((product, i) => i < 20));
+  }, [allProducts])
+  
 
   function handleFilter() {
-    return products.filter((p) =>
+    let result = [...products]
+    if (search) {
+      result.filter((p) =>
       p.DeviceName.toLowerCase().includes(search.toLowerCase())
     );
+    }
+    return result
   }
-
+  const handlePagination = nb => {
+    return products.filter((p) => pagination)
+  }
   const filtered = handleFilter();
 
   const classes = useStyles();
@@ -53,9 +66,9 @@ const ProductList = (props) => {
       <Grid container justify="space-between">
         <Autocomplete
           id="grouped-demo"
-          options={products}
-          groupBy={(products) => products.Brand}
-          getOptionLabel={(products) => products.DeviceName}
+          options={allProducts}
+          groupBy={(allProducts) => allProducts.Brand}
+          getOptionLabel={(allProducts) => allProducts.DeviceName}
           style={{ width: 300 }}
           renderInput={(params) => (
             <TextField
@@ -98,12 +111,12 @@ const ProductList = (props) => {
         </Grid>
       </div>
       <div className={classes.pagination}>
-        <Typography variant="caption">1-6 of 20</Typography>
+        <Typography variant="caption">{products.length*(pagination-1)+1}-{products.length*(pagination)} of {allProducts.length && allProducts.length}</Typography>
         <IconButton>
           <ChevronLeftIcon />
         </IconButton>
         <IconButton>
-          <ChevronRightIcon />
+          <ChevronRightIcon onClick={() => handlePagination(1)} />
         </IconButton>
       </div>
     </div>
