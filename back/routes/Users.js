@@ -105,7 +105,13 @@ router.post("/api/createuser", function (req, res, next) {
   });
 });
 
-router.patch("/:id", (req, res, next) => {
+router.get("/admin/user/:id", (req, res, err) => {
+  User.findById(req.params.id)
+    .then((user) => res.status(200).json(user))
+    .catch((err) => console.log(err));
+});
+
+router.patch("/admin/user/:id", (req, res, next) => {
   const newUser = { ...req.body.user };
   userModel
     .findByIdAndUpdate(req.params.id, newUser, { new: true })

@@ -30,7 +30,7 @@ const ProductSchema = new mongoose.Schema({
     default: 0,
     required: true,
   },
-  image: { type: [String], default: ["/defaultPhone.png"] },
+  image: { type: [String], default: ["defaultPhone.png"] },
   reviews: [
     {
       rate: { type: Number, required: true },

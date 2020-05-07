@@ -9,10 +9,22 @@ const multer = require("multer");
 const storage = multer.diskStorage({
   destination: "./public/images/phone",
   filename: function (req, file, cb) {
-    cb(null, "IMAGE-" + Date.now() + file.originalname);
+    cb(null, "phone-" + Date.now() + file.originalname);
   },
 });
-let upload = multer({ storage: storage }).array("file");
+let upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (
+      !file.mimetype.includes("jpeg") &&
+      !file.mimetype.includes("jpg") &&
+      !file.mimetype.includes("png")
+    ) {
+      return cb(null, false, new Error("Only images are allowed"));
+    }
+    cb(null, true);
+  },
+}).array("file");
 
 /* router.get("/admin", (req, res, next) => {
   User.findById(req.user_id)
@@ -23,50 +35,61 @@ let upload = multer({ storage: storage }).array("file");
 router.get("/admin/products", (req, res, err) => {
   Product.find()
     .limit(20)
+    .sort({ _id: -1 })
     .then((products) => res.status(200).json(products))
     .catch(err);
 });
 
-// router.post("/admin/products", upload, (req, res, err) => {
-  // upload(req, res, function (err) {
-  //   if (err instanceof multer.MulterError) {
-  //     return res.status(500).json(err);
-  //   } else if (err) {
-  //     return res.status(500).json(err);
-  //   }
-  //   return res.status(200).send(req.file);
-  // });
-//   const product = req.body.values;
-//   if (
-//     !product.DeviceName ||
-//     !product.Brand ||
-//     !product.pricePhone ||
-//     !product.stock
-//   ) {
-//     res
-//       .status(403)
-//       .json({ type: "error", msg: "Fill all the required fields please." });
-//   } else {
-//     Product.findOne({ DeviceName: product.DeviceName }).then((product) => {
-//       if (product) {
-//         res.status(403).json({
-//           type: "error",
-//           msg: "A product with this name already exist.",
-//         });
-//       } else {
-//         console.log(req.body);
+router.get("/admin/products/:id", (req, res, err) => {
+  Product.findById(req.params.id)
+    .then((product) => res.status(200).json(product))
+    .catch((err) => console.log(err));
+});
 
-//         Product.create(req.body.values)
-//           .then((dbRes) =>
-//             res.status(200).json({ type: "success", msg: "Product created !" })
-//           )
-//           .catch((dbErr) => {
-//             console.log(dbErr);
-//           });
-//       }
-//     });
-//   }
-// });
+router.post("/admin/products", (req, res, err) => {
+  upload(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      return res.status(500).json(err);
+    } else if (err) {
+      return res.status(500).json(err);
+    }
+    const productInfo = req.body;
+    if (
+      !productInfo.DeviceName ||
+      !productInfo.Brand ||
+      !productInfo.pricePhone ||
+      !productInfo.stock
+    ) {
+      res
+        .status(403)
+        .json({ type: "error", msg: "Fill all the required fields please." });
+    } else {
+      Product.findOne({ DeviceName: productInfo.DeviceName }).then(
+        (product) => {
+          if (product) {
+            res.status(403).json({
+              type: "error",
+              msg: "A product with this name already exist.",
+            });
+          } else {
+            req.files.length
+              ? (productInfo.image = req.files.map((file) => file.filename))
+              : delete productInfo.image;
+            Product.create(productInfo)
+              .then((dbRes) =>
+                res
+                  .status(200)
+                  .json({ type: "success", msg: "Product created !" })
+              )
+              .catch((dbErr) => {
+                console.log(dbErr);
+              });
+          }
+        }
+      );
+    }
+  });
+});
 
 router.get("/admin/users", (req, res, err) => {
   User.find()

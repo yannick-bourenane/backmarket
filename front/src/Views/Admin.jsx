@@ -35,8 +35,8 @@ const HomeIsLoggedIn = () => {
           user: {
             text: value,
           },
-        },
-        { withCredentials: true }
+        }
+        // { withCredentials: true }
       )
       .then((response) => {
         if (response.data.status === "Text Created") {
