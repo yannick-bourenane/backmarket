@@ -111,10 +111,11 @@ router.get("/admin/user/:id", (req, res, err) => {
     .catch((err) => console.log(err));
 });
 
-router.patch("/admin/user/:id", (req, res, next) => {
-  const newUser = { ...req.body.user };
-  userModel
-    .findByIdAndUpdate(req.params.id, newUser, { new: true })
+router.post("/admin/user/:id", (req, res, next) => {
+  const updatedUser = { email, password, firstname, lastname, address, zipcode, city, country } = req.body.user;
+  console.log(updatedUser + "je suis le user update")
+  User
+    .findByIdAndUpdate(req.params.id, updatedUser, { new: true })
     .then(user => {
       res.status(200).json(user);
     })
