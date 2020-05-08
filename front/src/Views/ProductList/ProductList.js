@@ -81,10 +81,11 @@ const ProductList = (props) => {
       <Grid container justify="space-between">
         <Autocomplete
           id="grouped-demo"
-          options={allProducts}
-          groupBy={(allProducts) => allProducts.Brand}
-          getOptionLabel={(allProducts) => allProducts.DeviceName}
+          options={filteredProducts.filter((p,i) => i < 20)}
+          groupBy={(filteredProducts) => filteredProducts.Brand}
+          getOptionLabel={(filteredProducts) => filteredProducts.DeviceName}
           style={{ width: 300 }}
+          clearOnBlur={false}
           renderInput={(params) => (
             <TextField
               {...params}

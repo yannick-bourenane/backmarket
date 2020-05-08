@@ -77,6 +77,7 @@ const ProductAdd = (props) => {
   };
   return (
     <div className={classes.root}>
+      {console.log(values)}
       {created.isCreated && (
         <Redirect
           to={{
