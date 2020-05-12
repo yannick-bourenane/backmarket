@@ -29,8 +29,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersToolbar = props => {
-  const { className, getSearch, ...rest } = props;
-
+  const { className, getSearch, userId, handleSelectAll, handleSelectOne, selectedUsers, ...rest } = props;
 
   const classes = useStyles();
 
@@ -41,14 +40,20 @@ const UsersToolbar = props => {
     >
       <div className={classes.row}>
         <span className={classes.spacer} />
-        <Button className={classes.importButton}>Import</Button>
-        <Button className={classes.exportButton}>Export</Button>
+        {props.selectedUsers.length === 1 ?
         <Button
           color="primary"
           variant="contained"
+          href={`/admin/users/${userId}`}
         >
           Edit User
-        </Button>
+        </Button> : <Button
+          color="primary"
+          variant="contained"
+          disabled
+        >
+          Edit User
+        </Button>}
       </div>
       <div className={classes.row}>
         <SearchInput

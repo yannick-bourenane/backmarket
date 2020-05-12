@@ -11,6 +11,7 @@ import withAuth from "./components/WithAuth";
 import "./styles/App.css";
 import ProductAdd from "./Views/ProductList/components/ProductAdd";
 import ProductEdit from "./Views/ProductList/components/ProductEdit";
+import ModifyUser from "./Views/UserList/components/ModifyUser"
 
 import {
   Dashboard as DashboardView,
@@ -39,6 +40,12 @@ const Routes = () => {
           exact
           layout={MainLayout}
           path={adminPath + "/users"}
+        />
+         <RouteWithLayout
+          component={ModifyUser}
+          exact
+          layout={MainLayout}
+          path={adminPath + "/users/:id"}
         />
         <RouteWithLayout
           component={ProductListView}

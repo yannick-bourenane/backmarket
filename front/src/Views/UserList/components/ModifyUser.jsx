@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
-import Navbar from "../components/Navbar";
 import {
   Card,
   CardHeader,
@@ -13,17 +12,33 @@ import {
   Button,
   TextField
 } from '@material-ui/core';
+import Alert from "@material-ui/lab/Alert";
+import Box from '@material-ui/core/Box';
 const axios = require("axios");
 
-const useStyles = makeStyles(() => ({
-  root: {}
+const useStyles = makeStyles(theme => ({
+  root: {},
+  row: {
+    height: '42px',
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: theme.spacing(1)
+  },
+  spacer: {
+    flexGrow: 1
+  },
+  deletetButton: {
+    marginRight: theme.spacing(1)
+  },
 }));
 
-const ModifyUser = match => {
+const ModifyUser = props => {
   const { className, ...rest } = props;
   const [countries, setCountries] = useState([]);
   const [avatar, setAvatar] = useState(null);
+  const [user, setUser] = useState({});
   const [countryForm, setCountryForm] = useState("");
+  const [deleted, setDeleted] = useState({ isDeleted: false, msg: {} });
   const [values, setValues] = useState({
     firstname: '',
     lastname: '',
@@ -50,7 +65,6 @@ function onChangeAvatar(e) {
   setAvatar(e.target.files[0])
 }
 
-
 useEffect(() => {
  axios.get('https://restcountries.eu/rest/v2/regionalbloc/eu')
   .then(function (response) {
@@ -62,25 +76,26 @@ useEffect(() => {
 }, [])
 
 useEffect(() => {
-    APIHandler.get(`/users/${match.match.params.id}`)
-        .then(apiRes => {
-            setUser(apiRes.data)
+    axios.get(`/admin/user/${props.match.params.id}`)
+        .then(res => {
+            setValues(res.data)
         })
+        .catch((err) => console.log(err))
 }, [])
 
 const handleSubmit = async (event) => {
   event.preventDefault();
-  const formData = new FormData();
-  formData.append('file',avatar);
-  const config = {
-      headers: {
-          'content-type': 'multipart/form-data'
-      }
-  };
+  // const formData = new FormData();
+  // formData.append('file',avatar);
+  // const config = {
+  //     headers: {
+  //         'content-type': 'multipart/form-data'
+  //     }
+  // };
     axios
-      .get(
-        process.env.REACT_APP_BACKEND_URL + `users/${match.match.params.id}`,
-        {formData, config,             
+      .post(
+        process.env.REACT_APP_BACKEND_URL + `/admin/user/${props.match.params.id}`,
+        {           
           user: {
             email: values.email,
             password: values.password,
@@ -95,11 +110,20 @@ const handleSubmit = async (event) => {
         { withCredentials: true }
       )
       .then((response) => {
-        console.log(response.data);
+        console.log(response);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        console.log(error);
       });}
+
+      const handleDelete = () => {
+      axios
+      .delete(process.env.REACT_APP_BACKEND_URL + `/admin/users/delete/${props.match.params.id}`)
+      .then(response => setDeleted({ isDeleted: true, msg: response.data }))
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
 
   return (
@@ -107,20 +131,42 @@ const handleSubmit = async (event) => {
       {...rest}
       className={clsx(classes.root, className)}
     >
+    
       <form
         autoComplete="off"
         noValidate
       >
+      <div className={classes.row}>
         <CardHeader
-          subheader="Don't have an account yet ? Register !"
-          title="Register"
+          subheader="Hey admin, you want to modify an user ?"
+          title="Modify an user"
         />
-        <Divider />
-        <CardContent>
+       <span className={classes.spacer} />
+        <Button
+          className={classes.deleteButton}
+          color="primary"
+          variant="contained"
+          onClick={handleDelete}
+          size="small"
+        >
+          Delete User
+        </Button>   
+        </div> 
+        <Grid>
+        {deleted.msg.msg &&
+        <Alert
+              varia nt="filled"
+              severity={deleted.isDelete}
+            >
+              {deleted.msg.msg}
+            </Alert> }      
+             </Grid> 
+        <Divider /> 
+<CardContent>
           <Grid
             container
             spacing={3}
-          >
+          > 
             <Grid
               item
               md={6}
@@ -259,14 +305,13 @@ const handleSubmit = async (event) => {
           </Grid>
           <input type="file" name="file" onChange= {onChangeAvatar} />
         </CardContent>
-        <Divider />
         <CardActions>
           <Button
             color="primary"
             variant="contained"
             onClick={handleSubmit}
           >
-            Register
+            Modify
           </Button>
         </CardActions>
       </form>
@@ -274,4 +319,4 @@ const handleSubmit = async (event) => {
   );
 }
 
-export default Register;
+export default ModifyUser;
