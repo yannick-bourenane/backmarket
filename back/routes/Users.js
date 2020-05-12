@@ -84,13 +84,10 @@ router.post("/api/createuser", function (req, res, next) {
     let avatar = null;
     if (req.files.length) avatar = req.files[0].filename;
 
-    if (!avatar) {
-      res.status(400).json({ message: "Provide an avatar" });
-      return;
-    }
-
     if (!email || !password) {
-      res.status(400).json({ message: "Provide username and password" });
+      res
+        .status(400)
+        .json({ type: "error", msg: "Provide email and password" });
       return;
     }
     if (password.length < 7) {
@@ -100,15 +97,30 @@ router.post("/api/createuser", function (req, res, next) {
       });
       return;
     }
-
+    if (
+      !avatar ||
+      !firstname ||
+      !lastname ||
+      !address ||
+      !zipcode ||
+      !city ||
+      !country
+    ) {
+      res
+        .status(400)
+        .json({ type: "error", msg: "Fill all required fields please." });
+      return;
+    }
     User.findOne({ email }, (err, foundUser) => {
       if (err) {
-        res.status(500).json({ message: "email check went bad." });
+        res.status(500).json({ type: "error", msg: "email check went bad." });
         return;
       }
 
       if (foundUser) {
-        res.status(400).json({ message: "email taken. Choose another one." });
+        res
+          .status(400)
+          .json({ type: "error", msg: "email taken. Choose another one." });
         return;
       }
 
@@ -127,12 +139,16 @@ router.post("/api/createuser", function (req, res, next) {
       aNewUser.save((err) => {
         if (err) {
           console.log(err);
-          res
-            .status(400)
-            .json({ message: "Saving user to database went wrong." });
+          res.status(400).json({
+            type: "error",
+            msg: "Saving user to database went wrong.",
+          });
           return;
         }
-        res.sendStatus(200);
+        res.status(200).json({
+          type: "success",
+          msg: "Account created !",
+        });
       });
     });
   });
