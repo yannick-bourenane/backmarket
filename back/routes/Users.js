@@ -7,16 +7,25 @@ const withAuth = require("../middleware");
 const path = require("path");
 const multer = require("multer");
 const storage = multer.diskStorage({
-   destination: "./public/images/avatars",
-   filename: function(req, file, cb){
-      cb(null,"IMAGE-" + Date.now() + path.extname(file.originalname));
-   }
+  destination: "./public/images/avatars",
+  filename: function (req, file, cb) {
+    cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
+  },
 });
 
-const upload = multer({
-   storage: storage,
-   limits:{fileSize: 1000000},
-}).single("myImage")
+let upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (
+      !file.mimetype.includes("jpeg") &&
+      !file.mimetype.includes("jpg") &&
+      !file.mimetype.includes("png")
+    ) {
+      return cb(null, false, new Error("Only images are allowed"));
+    }
+    cb(null, true);
+  },
+}).array("file");
 
 router.post("/api/authenticate", function (req, res) {
   const { email, password } = req.body;
@@ -54,53 +63,77 @@ router.post("/api/authenticate", function (req, res) {
 });
 
 router.post("/api/createuser", function (req, res, next) {
-  const { email, password, firstname, lastname, address, zipcode, city, country } = req.body.user;
-  const avatar = req.file;
-  console.log("ceci est l'avatar ===>" + avatar)
-  if (!email || !password) {
-    res.status(400).json({ message: "Provide username and password" });
-    return;
-  }
-  if (password.length < 7) {
-    res.status(400).json({
-      message:
-        "Please make your password at least 8 characters long for security purposes.",
-    });
-    return;
-  }
+  upload(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      return res.status(500).json(err);
+    } else if (err) {
+      return res.status(500).json(err);
+    }
 
-  User.findOne({ email }, (err, foundUser) => {
-    if (err) {
-      res.status(500).json({ message: "email check went bad." });
+    const {
+      email,
+      password,
+      firstname,
+      lastname,
+      address,
+      zipcode,
+      city,
+      country,
+    } = req.body;
+
+    let avatar = null;
+    if (req.files.length) avatar = req.files[0].filename;
+
+    if (!avatar) {
+      res.status(400).json({ message: "Provide an avatar" });
       return;
     }
 
-    if (foundUser) {
-      res.status(400).json({ message: "email taken. Choose another one." });
+    if (!email || !password) {
+      res.status(400).json({ message: "Provide username and password" });
+      return;
+    }
+    if (password.length < 7) {
+      res.status(400).json({
+        message:
+          "Please make your password at least 8 characters long for security purposes.",
+      });
       return;
     }
 
-    const aNewUser = new User({
-      email: email,
-      password: password,
-      firstname:firstname, 
-      lastname:lastname, 
-      address:address, 
-      zipcode:zipcode, 
-      city:city, 
-      country:country,
-      avatar:avatar,
-    });
-
-    aNewUser.save((err) => {
+    User.findOne({ email }, (err, foundUser) => {
       if (err) {
-        console.log(err)
-        res
-          .status(400)
-          .json({ message: "Saving user to database went wrong." });
+        res.status(500).json({ message: "email check went bad." });
         return;
       }
-      res.sendStatus(200);
+
+      if (foundUser) {
+        res.status(400).json({ message: "email taken. Choose another one." });
+        return;
+      }
+
+      const aNewUser = new User({
+        email: email,
+        password: password,
+        firstname: firstname,
+        lastname: lastname,
+        address: address,
+        zipcode: zipcode,
+        city: city,
+        country: country,
+        avatar: avatar,
+      });
+
+      aNewUser.save((err) => {
+        if (err) {
+          console.log(err);
+          res
+            .status(400)
+            .json({ message: "Saving user to database went wrong." });
+          return;
+        }
+        res.sendStatus(200);
+      });
     });
   });
 });
@@ -112,11 +145,19 @@ router.get("/admin/user/:id", (req, res, err) => {
 });
 
 router.post("/admin/user/:id", (req, res, next) => {
-  const updatedUser = { email, password, firstname, lastname, address, zipcode, city, country } = req.body.user;
-  console.log(updatedUser + "je suis le user update")
-  User
-    .findByIdAndUpdate(req.params.id, updatedUser, { new: true })
-    .then(user => {
+  const updatedUser = ({
+    email,
+    password,
+    firstname,
+    lastname,
+    address,
+    zipcode,
+    city,
+    country,
+  } = req.body.user);
+  console.log(updatedUser + "je suis le user update");
+  User.findByIdAndUpdate(req.params.id, updatedUser, { new: true })
+    .then((user) => {
       res.status(200).json(user);
     })
     .catch(next);

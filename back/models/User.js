@@ -8,7 +8,7 @@ const saltRounds = 10;
 const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  avatar:{type: String, required : true, default:"/yannick-prison.png"},
+  avatar: { type: String, required: true, default: "/yannick-prison.png" },
   role: { type: String, required: true, default: "user" },
   firstname: { type: String, required: true },
   lastname: { type: String, required: true },
