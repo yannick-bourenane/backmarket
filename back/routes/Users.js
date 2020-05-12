@@ -122,6 +122,14 @@ router.post("/admin/user/:id", (req, res, next) => {
     .catch(next);
 });
 
+router.delete("/admin/users/delete/:id", (req, res, err) => {
+  User.findByIdAndDelete(req.params.id)
+    .then((user) =>
+      res.status(200).json({ type: "success", msg: "User deleted !" })
+    )
+    .catch((err) => console.log(err));
+});
+
 // router.post("/admin", withAuth, (req, res, next) => {
 //   const { text } = req.body.user;
 //   User.findByIdAndUpdate(req.user_id, { text: text })
