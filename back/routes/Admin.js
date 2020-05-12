@@ -140,4 +140,11 @@ router.get("/admin/users", (req, res, err) => {
     .catch(err);
 });
 
+router.get("/admin/orders", (req, res, err) => {
+  Transaction.find()
+    .sort({ _id: -1 })
+    .then((order) => res.status(200).json(order))
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;

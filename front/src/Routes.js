@@ -15,6 +15,7 @@ import ProductEdit from "./Views/ProductList/components/ProductEdit";
 import {
   Dashboard as DashboardView,
   ProductList as ProductListView,
+  OrderList as OrderListView,
   UserList as UserListView,
   Account as AccountView,
   Settings as SettingsView,
@@ -49,13 +50,19 @@ const Routes = () => {
           component={ProductAdd}
           exact
           layout={MainLayout}
-          path={adminPath + "/products/add/"}
+          path={adminPath + "/products/add"}
         />
         <RouteWithLayout
           component={ProductEdit}
           exact
           layout={MainLayout}
           path={adminPath + "/products/edit/:id"}
+        />
+        <RouteWithLayout
+          component={OrderListView}
+          exact
+          layout={MainLayout}
+          path={adminPath + "/orders"}
         />
         <RouteWithLayout
           component={AccountView}

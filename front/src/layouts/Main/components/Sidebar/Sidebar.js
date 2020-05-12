@@ -6,6 +6,7 @@ import { Divider, Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import ImageIcon from '@material-ui/icons/Image';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
@@ -56,9 +57,13 @@ const Sidebar = props => {
     {
       title: 'Products',
       href: adminPath + '/products',
+      icon: <PhoneIphoneIcon />
+    },
+    {
+      title: 'Orders',
+      href: adminPath + '/orders',
       icon: <ShoppingBasketIcon />
     },
-
     {
       title: 'Account',
       href: adminPath + '/account',
