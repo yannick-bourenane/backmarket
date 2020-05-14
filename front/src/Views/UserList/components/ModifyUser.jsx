@@ -37,8 +37,9 @@ const ModifyUser = props => {
   const [countries, setCountries] = useState([]);
   const [avatar, setAvatar] = useState(null);
   const [user, setUser] = useState({});
-  const [countryForm, setCountryForm] = useState("");
+  // const [countryForm, setCountryForm] = useState("");
   const [deleted, setDeleted] = useState({ isDeleted: false, msg: {} });
+  const [updated, setUpdated] = useState({ isUpdated: false, msg: {} });
   const [values, setValues] = useState({
     firstname: '',
     lastname: '',
@@ -57,9 +58,9 @@ const ModifyUser = props => {
     });
   };
 
-  function handleCountry(e) {
-    setCountryForm(e.target.value)
-  }
+  // function handleCountry(e) {
+  //   setCountryForm(e.target.value)
+  // }
 
 function onChangeAvatar(e) {
   setAvatar(e.target.files[0])
@@ -85,36 +86,27 @@ useEffect(() => {
 
 const handleSubmit = async (event) => {
   event.preventDefault();
-  // const formData = new FormData();
-  // formData.append('file',avatar);
-  // const config = {
-  //     headers: {
-  //         'content-type': 'multipart/form-data'
-  //     }
-  // };
+  const formData = new FormData();
+
+  for (let key in values) {
+    formData.append(key, values[key]);
+  }
+  formData.append('file',avatar);
+  
+console.log(formData)
     axios
       .post(
-        process.env.REACT_APP_BACKEND_URL + `/admin/user/${props.match.params.id}`,
-        {           
-          user: {
-            email: values.email,
-            password: values.password,
-            firstname:values.firstname,
-            lastname:values.lastname,
-            address:values.address,
-            zipcode:values.zipcode,
-            city:values.city,
-            country:countryForm,
-          }
-        },
+        process.env.REACT_APP_BACKEND_URL + `/admin/user/${props.match.params.id}`, formData,
         { withCredentials: true }
       )
       .then((response) => {
-        console.log(response);
+        console.log(typeof response.data)
+        setUpdated({ isUpdated: true, msg: response.data });
       })
       .catch((error) => {
         console.log(error);
       });}
+
 
       const handleDelete = () => {
       axios
@@ -153,10 +145,17 @@ const handleSubmit = async (event) => {
         </Button>   
         </div> 
         <Grid>
+        {updated.isUpdated &&
+        <Alert
+              varia nt="filled"
+              severity={updated.msg.type}
+            >
+             {updated.msg.msg}
+            </Alert> }   
         {deleted.msg.msg &&
         <Alert
               varia nt="filled"
-              severity={deleted.isDelete}
+              severity={deleted.msg.type}
             >
               {deleted.msg.msg}
             </Alert> }      
@@ -283,13 +282,13 @@ const handleSubmit = async (event) => {
                 fullWidth
                 label="Select Country"
                 margin="dense"
-                name="state"
-                onChange={handleCountry}
+                name="country"
+                onChange={handleChange}
                 required
                 select
                 // eslint-disable-next-line react/jsx-sort-props
                 SelectProps={{ native: true }}
-                value={values.state}
+                value={values.country}
                 variant="outlined"
               >
                 {countries.length && countries.map((option,i) => (

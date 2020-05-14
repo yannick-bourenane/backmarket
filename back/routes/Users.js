@@ -145,22 +145,43 @@ router.get("/admin/user/:id", (req, res, err) => {
 });
 
 router.post("/admin/user/:id", (req, res, next) => {
-  const updatedUser = ({
-    email,
-    password,
-    firstname,
-    lastname,
-    address,
-    zipcode,
-    city,
-    country,
-  } = req.body.user);
-  console.log(updatedUser + "je suis le user update");
-  User.findByIdAndUpdate(req.params.id, updatedUser, { new: true })
-    .then((user) => {
-      res.status(200).json(user);
-    })
-    .catch(next);
+  upload(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      return res.status(500).json(err);
+    } else if (err) {
+      return res.status(500).json(err);
+    }
+    let avatar = null;
+    if (req.files.length) avatar = req.files[0].filename;
+    const {
+      email,
+      password,
+      firstname,
+      lastname,
+      address,
+      zipcode,
+      city,
+      country,
+    } = req.body;
+    
+    const updatedUser = ({
+      email: email,
+      password: password,
+      firstname: firstname,
+      lastname: lastname,
+      address: address,
+      zipcode: zipcode,
+      city: city,
+      country: country,
+      avatar: avatar,
+    });
+    console.log(updatedUser + "je suis le user update");
+    User.findByIdAndUpdate(req.params.id, updatedUser, { new: true })
+      .then((user) => {
+        res.status(200).json({type: "success", msg: "User updated !" });
+      })
+      .catch(next);
+  });
 });
 
 router.delete("/admin/users/delete/:id", (req, res, err) => {
