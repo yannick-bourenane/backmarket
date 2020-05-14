@@ -3,6 +3,9 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import Navbar from "../components/Navbar";
+import Alert from "@material-ui/lab/Alert";
+import { Redirect } from "react-router-dom";
+import { InputLabel } from '@material-ui/core';
 import {
   Card,
   CardHeader,
@@ -23,6 +26,8 @@ const Register = props => {
   const { className, ...rest } = props;
   const [countries, setCountries] = useState([]);
   const [avatar, setAvatar] = useState(null);
+  const [msg, setMsg] = useState({ type: "", msg: "" });
+  const [created, setCreated] = useState({ isCreated: false, msg: {} });
   //const [countryForm, setCountryForm] = useState("");
   const [values, setValues] = useState({
     firstname: '',
@@ -78,19 +83,27 @@ console.log(formData)
         { withCredentials: true }
       )
       .then((response) => {
-        console.log(response.data);
+        setCreated({ isCreated: true, msg: response.data });
       })
       .catch((error) => {
-        console.log(error.response.data);
+        setMsg(error.response.data);
       });}
 
 
   return (
+    <>
+      {created.isCreated && (
+      <Redirect
+        to={{
+          pathname: "/",
+          msg: created.msg,
+        }}
+      />
+      )}
     <Card
       {...rest}
       className={clsx(classes.root, className)}
     >
-      {values.country && console.log(values.country)}
       <form
         autoComplete="off"
         noValidate
@@ -217,6 +230,12 @@ console.log(formData)
                 value={values.city}
                 variant="outlined"
               />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
               <TextField
                 fullWidth
                 label="Select Country"
@@ -227,9 +246,10 @@ console.log(formData)
                 select
                 // eslint-disable-next-line react/jsx-sort-props
                 SelectProps={{ native: true }}
-                value={values.country}
+                value={values.country ? values.country : ""}
                 variant="outlined"
               >
+                  <option selected></option>
                 {countries.length && countries.map((option,i) => (
                   <option
                     key={i}
@@ -240,10 +260,30 @@ console.log(formData)
                 ))}
               </TextField>
             </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+          <InputLabel className={classes.spaceBottom}>
+            Avatar
+          </InputLabel>
+          <TextField
+          fullWidth
+          type="file"
+              margin="dense"
+              name="file"
+              onChange={onChangeAvatar}
+              required
+              variant="outlined"
+            />
+           </Grid>
           </Grid>
-          <input type="file" name="file" onChange= {onChangeAvatar} />
         </CardContent>
         <Divider />
+        {msg.msg && (
+          <Alert severity={msg.type && msg.type}>{msg.msg}</Alert>
+        )}
         <CardActions>
           <Button
             color="primary"
@@ -254,7 +294,8 @@ console.log(formData)
           </Button>
         </CardActions>
       </form>
-    </Card>
+      </Card>
+      </>
   );
 }
 
