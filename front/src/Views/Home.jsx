@@ -1,14 +1,11 @@
 import React from "react";
-import { filterByColor } from "../actions";
+import { fetchAllPhones } from "../actions";
 import { useSelector, useDispatch } from "react-redux";
 
 const Home = () => {
-  const dataFilteredByColor = useSelector((state) => state.dataFilteredByColor);
+  const dataAllPhones = useSelector((state) => state.fetchAllPhones.data);
   const dispatch = useDispatch();
-  const functionOnClick = (color) => {
-    dispatch(filterByColor(color));
-  };
-  return <div>homepage</div>;
+  return <div>{console.log("je suis dataallphones" + dataAllPhones)} {dataAllPhones.length && dataAllPhones.map(phone => <li>{phone.DeviceName}</li>)}</div>;
 };
 
 export default Home;

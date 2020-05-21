@@ -1,6 +1,13 @@
-export const filterByColor = (color) => {
+export const fetchAllPhones = (data) => {
   return {
-    type: "FILTERBYCOLOR",
-    color: color,
+    type: "FETCHALLPHONES",
+    data:data,
   };
 };
+
+export const fetchHigh = (data) => {
+  return {
+    type: "FETCHHIGH",
+    data:data,
+  }
+}

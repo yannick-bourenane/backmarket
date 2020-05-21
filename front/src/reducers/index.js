@@ -1,8 +1,10 @@
-import ReducerFilterByColor from "./ReducerFilterByColor";
+import ReducerFetchAllPhones from "./ReducerFetchAllPhones";
+import ReducerFetchFilteredPhones from "./ReducerFetchFilteredPhones";
 import { combineReducers } from "redux";
 
 const allReducers = combineReducers({
-  dataFilteredByColor: ReducerFilterByColor,
+  fetchAllPhones: ReducerFetchAllPhones,
+  fetchFilteredPhones: ReducerFetchFilteredPhones,
 });
 
 export default allReducers;
