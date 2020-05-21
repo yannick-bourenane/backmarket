@@ -1,17 +1,17 @@
 import React from "react";
 import { BrowserRouter, Switch, Redirect, Route } from "react-router-dom";
 
-import { RouteWithLayout } from "./components";
-import { Main as MainLayout, Minimal as MinimalLayout } from "./layouts";
+import { RouteWithLayout } from "./back-office/components";
+import { Main as MainLayout, Minimal as MinimalLayout } from "./back-office/layouts";
 import Login from "./Views/Login";
 import Register from "./Views/Register";
-import Admin from "./Views/Admin";
+import Admin from "./back-office/Views/Admin";
 import Home from "./Views/Home";
 import withAuth from "./components/WithAuth";
 import "./styles/App.css";
-import ProductAdd from "./Views/ProductList/components/ProductAdd";
-import ProductEdit from "./Views/ProductList/components/ProductEdit";
-import ModifyUser from "./Views/UserList/components/ModifyUser"
+import ProductAdd from "./back-office/Views/ProductList/components/ProductAdd";
+import ProductEdit from "./back-office/Views/ProductList/components/ProductEdit";
+import ModifyUser from "./back-office/Views/UserList/components/ModifyUser"
 
 import {
   Dashboard as DashboardView,

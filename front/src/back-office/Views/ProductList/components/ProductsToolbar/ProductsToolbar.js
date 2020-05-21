@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
 
-import { SearchInput } from 'components';
+import { SearchInput } from 'back-office/components';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -28,8 +28,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UsersToolbar = props => {
-  const { className, getSearch, userId, handleSelectAll, handleSelectOne, selectedUsers, ...rest } = props;
+const ProductsToolbar = props => {
+  const { className, ...rest } = props;
 
   const classes = useStyles();
 
@@ -40,34 +40,27 @@ const UsersToolbar = props => {
     >
       <div className={classes.row}>
         <span className={classes.spacer} />
-        {props.selectedUsers.length === 1 ?
+        <Button className={classes.importButton}>Import</Button>
+        <Button className={classes.exportButton}>Export</Button>
         <Button
           color="primary"
           variant="contained"
-          href={`/admin/users/${userId}`}
         >
-          Edit User
-        </Button> : <Button
-          color="primary"
-          variant="contained"
-          disabled
-        >
-          Edit User
-        </Button>}
+          Add product
+        </Button>
       </div>
       <div className={classes.row}>
         <SearchInput
           className={classes.searchInput}
-          placeholder="Search user"
-          onChange={getSearch}
+          placeholder="Search product"
         />
       </div>
     </div>
   );
 };
 
-UsersToolbar.propTypes = {
+ProductsToolbar.propTypes = {
   className: PropTypes.string
 };
 
-export default UsersToolbar;
+export default ProductsToolbar;

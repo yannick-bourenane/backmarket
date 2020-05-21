@@ -1,5 +1,5 @@
-@import "./index.css";
-@import "./admin.css";
+@import "./home.css";
+@import "../back-office/styles/admin.css";
 @import "./header.css";
 @import "./navbar.css";
 @import "./products.css";

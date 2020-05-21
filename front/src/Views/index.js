@@ -1,7 +1,7 @@
-export { default as Account } from './Account';
-export { default as Dashboard } from './Dashboard';
-export { default as NotFound } from './NotFound';
-export { default as ProductList } from './ProductList';
-export { default as OrderList } from './OrderList';
-export { default as Settings } from './Settings';
-export { default as UserList } from './UserList';
+export { default as Account } from '../back-office/Views/Account';
+export { default as Dashboard } from '../back-office/Views/Dashboard';
+export { default as NotFound } from '../back-office/Views/NotFound';
+export { default as ProductList } from '../back-office/Views/ProductList';
+export { default as OrderList } from '../back-office/Views/OrderList';
+export { default as Settings } from '../back-office/Views/Settings';
+export { default as UserList } from '../back-office/Views/UserList';

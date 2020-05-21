@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
-import Navbar from "../components/Navbar";
+import Navbar from "../back-office/components/Navbar";
 import Alert from "@material-ui/lab/Alert";
 import { Redirect } from "react-router-dom";
 import { InputLabel } from '@material-ui/core';
