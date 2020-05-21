@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser");
 const withAuth = require("./middleware");
 const userRouter = require("./routes/Users.js");
 const adminRouter = require("./routes/Admin.js");
+const productRouter = require("./routes/Products.js");
 const Product = require("./models/Product");
 const User = require("./models/User");
 
@@ -87,6 +88,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(userRouter);
 app.use(adminRouter);
+app.use(productRouter);
 
 app.get("/", function (req, res) {
   res.sendStatus(200);
