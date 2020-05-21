@@ -21,7 +21,7 @@ import {
   Account as AccountView,
   Settings as SettingsView,
   NotFound as NotFoundView,
-} from "./Views";
+} from "./back-office/Views";
 
 const Routes = () => {
   const adminPath = "/admin";

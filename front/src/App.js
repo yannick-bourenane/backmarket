@@ -9,6 +9,7 @@ import { chartjs } from './back-office/helpers';
 import theme from './back-office/theme';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import './assets/scss/index.scss';
+import 'semantic-ui-css/semantic.min.css'
 import validators from './back-office/common/validators';
 import Routes from './Routes';
 import axios from 'axios';
