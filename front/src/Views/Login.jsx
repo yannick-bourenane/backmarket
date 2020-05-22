@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "bulma/css/bulma.css";
+//import "bulma/css/bulma.css";
 import Navbar from "../back-office/components/Navbar";
 const axios = require("axios");
 

@@ -1,5 +1,5 @@
 import React from "react";
-import "bulma/css/bulma.css";
+//import "bulma/css/bulma.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 function Navbar() {

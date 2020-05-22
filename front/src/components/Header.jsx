@@ -1,11 +1,18 @@
-import React from 'react'
+import React from "react";
+import Logo from "./Header/Logo";
+import SearchBar from "./Header/SearchBar";
+import MenuHeader from "./Header/MenuHeader";
 
 const Header = () => {
-    return (
-        <div>
-            header
-        </div>
-    )
-}
+  return (
+    <header className="main-header">
+      <Logo />
 
-export default Header
+      <SearchBar />
+
+      <MenuHeader />
+    </header>
+  );
+};
+
+export default Header;

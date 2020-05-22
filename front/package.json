@@ -11,6 +11,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
+    "bloomer": "^0.6.5",
     "bulma": "^0.8.2",
     "chart.js": "^2.8.0",
     "clsx": "^1.0.4",
@@ -24,7 +25,6 @@
     "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
-    "react-bulma-components": "^3.2.0",
     "react-chartjs-2": "^2.7.6",
     "react-dom": "^16.13.1",
     "react-moment": "^0.9.7",
@@ -34,16 +34,11 @@
     "react-scripts": "3.4.1",
     "recompose": "^0.30.0",
     "redux": "^4.0.5",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.88.2",
     "underscore": "^1.9.1",
     "uuid": "^3.3.2",
     "validate.js": "^0.13.1"
   },
   "devDependencies": {
-    "prettier": "^1.17.1",
-    "prettier-eslint": "^8.8.2",
-    "prettier-eslint-cli": "^4.7.1",
     "typescript": "^3.5.1"
   },
   "scripts": {
