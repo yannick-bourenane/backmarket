@@ -12,7 +12,7 @@ import "./styles/App.css";
 import ProductAdd from "./back-office/Views/ProductList/components/ProductAdd";
 import ProductEdit from "./back-office/Views/ProductList/components/ProductEdit";
 import ModifyUser from "./back-office/Views/UserList/components/ModifyUser"
-
+import ProductListPhones from '../src/components/Products/ProductList'
 import {
   Dashboard as DashboardView,
   ProductList as ProductListView,
@@ -89,6 +89,12 @@ const Routes = () => {
           exact
           layout={MinimalLayout}
           path="/not-found"
+        />
+        <RouteWithLayout
+          component={ProductListPhones}
+          exact
+          layout={MinimalLayout}
+          path="/search"
         />
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
