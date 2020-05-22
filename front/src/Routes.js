@@ -2,7 +2,10 @@ import React from "react";
 import { BrowserRouter, Switch, Redirect, Route } from "react-router-dom";
 
 import { RouteWithLayout } from "./back-office/components";
-import { Main as MainLayout, Minimal as MinimalLayout } from "./back-office/layouts";
+import {
+  Main as MainLayout,
+  Minimal as MinimalLayout,
+} from "./back-office/layouts";
 import Login from "./Views/Login";
 import Register from "./Views/Register";
 import Admin from "./back-office/Views/Admin";
@@ -11,8 +14,8 @@ import withAuth from "./components/WithAuth";
 import "./styles/App.css";
 import ProductAdd from "./back-office/Views/ProductList/components/ProductAdd";
 import ProductEdit from "./back-office/Views/ProductList/components/ProductEdit";
-import ModifyUser from "./back-office/Views/UserList/components/ModifyUser"
-import ProductListPhones from '../src/components/Products/ProductList'
+import ModifyUser from "./back-office/Views/UserList/components/ModifyUser";
+import ProductListPhones from "../src/components/Products/ProductList";
 import {
   Dashboard as DashboardView,
   ProductList as ProductListView,
@@ -41,7 +44,7 @@ const Routes = () => {
           layout={MainLayout}
           path={adminPath + "/users"}
         />
-         <RouteWithLayout
+        <RouteWithLayout
           component={ModifyUser}
           exact
           layout={MainLayout}
@@ -90,12 +93,7 @@ const Routes = () => {
           layout={MinimalLayout}
           path="/not-found"
         />
-        <RouteWithLayout
-          component={ProductListPhones}
-          exact
-          layout={MinimalLayout}
-          path="/search"
-        />
+        <Route exact path="/search" component={ProductListPhones} />
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/admin" component={withAuth(Admin)} />
