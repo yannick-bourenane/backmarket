@@ -1,39 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const ProductList = (props) => {
-  const [brands, setBrands] = useState([]);
   const products = useSelector((state) => state.fetchAllPhones.data);
+  const [selectedBrands, setSelectedBrands] = useState([]);
   let brandsPhones = [...new Set(products.map((brand) => brand.Brand))];
 
-  function filterByBrand(e, arr, brands) {
-    if (brands.includes(e.target.value)) {
-      return setBrands(brands.filter((m) => m !== e.target.value));
+
+
+  function handleSelectedBrands(e) {
+      if (selectedBrands.includes(e.target.value)) {
+      return setSelectedBrands(selectedBrands.filter((m) => m !== e.target.value));
     }
-    setBrands([...brands, e.target.value]);
-    
+    setSelectedBrands([...selectedBrands, e.target.value]);
   }
+
+  function filterSelectedBrands() {
+    if(selectedBrands.length === 0)
+    return products 
+    else 
+    return products.filter((p) => selectedBrands.includes(p.Brand))
+  }
+
+
 
   // props.sales / props.number
   return (
     <div>
+          {console.log("THIS IS BRANDS" + selectedBrands)}
+
       {brandsPhones &&
         brandsPhones.map((brand) => (
           <>
             <input
               type="checkbox"
               value={brand}
-              onChange={filterByBrand}
+              onChange={handleSelectedBrands}
               id={brand}
             />{" "}
             <label>{brand}</label>
           </>
         ))}
-      {products.map((product) => (
+      {filterSelectedBrands().map((product) => (
         <li>{product.DeviceName}</li>
       ))}
 
-      {console.log(brands)}
     </div>
   );
 };
