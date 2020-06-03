@@ -19,7 +19,7 @@ const Home = () => {
       <Container>
         <CategorieList />
         <Concept />
-        <ProductList sales={true} number="4" />
+        {/* <ProductList sales={true} number="4" /> */}
         <FaqExcerpt />
       </Container>
       <Footer />

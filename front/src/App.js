@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { chartjs } from "./back-office/helpers";
 import theme from "./back-office/theme";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import "bulma/css/bulma.css";
 import validators from "./back-office/common/validators";
 import Routes from "./Routes";
 import axios from "axios";
