@@ -10,13 +10,13 @@ const Header = () => {
   return (
     <header className="main-header">
       <Columns isVCentered>
-        <Column isSize="2">
+        <Column isSize={2}>
           <Logo />
         </Column>
-        <Column isSize="6">
+        <Column isSize={6}>
           <SearchBar />
         </Column>
-        <Column isSize="4">
+        <Column isSize={4}>
           <MenuHeader />
         </Column>
       </Columns>
