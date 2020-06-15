@@ -12,7 +12,7 @@ export const fetchHigh = (data) => {
   }
 }
 
-export const filterByBrand = (phones,brands) => {
+export const filterByBrand = (brands,phones) => {
   return {
     type:"FILTER_BY_BRAND",
     phones : phones,
