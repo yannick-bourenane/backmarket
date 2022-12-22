@@ -15,7 +15,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "fonoapi-nodejs": "^0.1.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "moment": "^2.24.0",
     "mongoose": "^5.9.9",
     "multer": "^1.4.2",
